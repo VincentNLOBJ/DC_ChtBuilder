@@ -40,6 +40,8 @@ def analyze_files():
 
         differences = 0
         offset = 0
+        memory_off = 0
+
         while offset < len(source_data) and offset < len(target_data):
             source_byte = source_data[offset]
             target_byte = target_data[offset]
@@ -52,22 +54,25 @@ def analyze_files():
                 if offset + 3 < len(source_data) and offset + 3 < len(target_data):
                     value = int.from_bytes(target_data[offset:offset+4], byteorder='little', signed=False)
                     memory_search_size = 5
+                    memory_off = offset
                     offset += 3
                 elif offset + 1 < len(source_data) and offset + 1 < len(target_data):
                     value = int.from_bytes(target_data[offset:offset+2], byteorder='little', signed=False)
                     memory_search_size = 4
                     offset += 1
+                    memory_off = offset
                 else:
                     value = target_byte
                     memory_search_size = 3
+                    memory_off = offset
 
-                log.write(f'cheat{differences-1}_address = "{offset+dc}"\n'
+                log.write(f'cheat{differences-1}_address = "{memory_off+dc}"\n'
                           f'cheat{differences-1}_address_bit_position = "0"\n'
                           f'cheat{differences - 1}_big_endian = "false"\n'
                           f'cheat{differences - 1}_cheat_type = "1"\n'
                           f'cheat{differences - 1}_code = "cheat"\n'
                           f'cheat{differences - 1}_desc = "cheat"\n'
-                          f'cheat{differences - 1}_enable = "false"\n'
+                          f'cheat{differences - 1}_enable = "true"\n'
                           f'cheat{differences - 1}_handler = "1"\n'
                           f'cheat{differences - 1}_memory_search_size = "{memory_search_size}"\n'
                           f'cheat{differences - 1}_repeat_add_to_address = "0"\n'
